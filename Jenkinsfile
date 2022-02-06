@@ -23,23 +23,23 @@ pipeline{
         }
 
         // 添加第二个stage， 运行源码打包命令
-        // stage('Package'){
-        //   steps{
-        //       container("maven") {
-        //           sh "mvn package -B -DskipTests"
-        //       }
-        //   }
-        // }
+         stage('Package'){
+           steps{
+               container("maven") {
+                   sh "mvn package -B -DskipTests"
+               }
+           }
+        }
 
 
         // 添加第三个stage, 运行容器镜像构建和推送命令， 用到了environment中定义的groovy环境变量
-        // stage('Image Build And Publish'){
-        //   steps{
-        //       container("kaniko") {
-        //           sh "kaniko -f `pwd`/Dockerfile -c `pwd` --destination=${IMAGE} --skip-tls-verify"
-        //       }
-        //   }
-        // }
+         stage('Image Build And Publish'){
+           steps{
+               container("kaniko") {
+                   sh "kaniko -f `pwd`/Dockerfile -c `pwd` --destination=${IMAGE} --skip-tls-verify"
+               }
+           }
+         }
 
         // 添加第四个stage, 部署应用到指定k8s集群
         stage('Deploy to Kubernetes') {
